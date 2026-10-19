@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>NEONLUCK | Home</title>
+
+        <style>
+            :root {
+                --bg: #080910;
+                --panel: #121421;
+                --cyan: #00f5ff;
+                --pink: #ff3cac;
+                --purple: #a855f7;
+                --muted: #999db5; 
+            }
+
+            * {
+                box-sizing: border-box;
+            }
+
+            body {
+                margin: 0;
+                background: var(--bg);
+                color: #f5f5ff;
+                font: 14px Arial, sans-serif;
+            }
+
+            a {
+                color: inherit;
+                text-decoration: none;
+            }
+
+            header {
+                padding: 22px 6%;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                gap: 15px;
+                border-bottom: 1px solid #252638;
+            }
+
+            .logo {
+                font-size: 24px;
+                font-weight: 900;
+                letter-spacing: 2px;
+            }
+
+            .logo span, h1 span {
+                color: var(--cyan);
+            }
+
+            nav {
+                display: flex;
+                gap: 22px;
+                flex-wrap: wrap;
+            }
+
+            nav a:hover {
+                color: var(--cyan);
+            }
+
+            .balance {
+                border: 1px solid #00f5ff55;
+                background: #00f5ff0b;
+                padding: 12px 18px;
+                border-radius: 10px;
+                color: var(--cyan);
+                font-weight: bold;
+            }
+
+            main {
+                max-width: 1200px;
+                margin: auto;
+                padding: 35px 6%;
+            }
+
+            .hero {
+                padding: 55px 35px;
+                border: 1px solid #a855f755;
+                border-radius: 20px;
+                background: radial-gradient(ellipse at 85% 15%, #a855f733, transparent 50%), linear-gradient(120deg, #17132a, #101735);
+            }
+
+            .tag {
+                color: var(--cyan);
+                letter-spacing: 3px;
+                font-size: 11px;
+            }
+
+            h1 {
+                font-size: clamp(36px, 6vw, 65px);
+                line-height: 1.1;
+                margin: 18px 0;
+            }
+
+            p {
+                color: var(--muted);
+                line-height: 1.8;
+            }
+
+            .btn {
+                display: inline-block;
+                background: var(--cyan);
+                color: #080910;
+                padding: 13px 18px;
+                border: 0;
+                border-radius: 7px;
+                font-weight: bold;
+                cursor: pointer;
+            }
+
+            section {
+                margin-top:38px;
+            }
+
+            .heading {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                gap: 12px;
+            }
+
+            .grid {
+                display: grid;
+                grid-template-columns: repeat(4, minmax(0, 1fr));
+                gap: 16px;
+            }
+
+            .card {
+                display: block;
+                background: var(--panel);
+                border: 1px solid #292b40;
+                border-radius: 14px;
+                overflow: hidden;
+                transition: 0.2s;
+            }
+
+            .card:hover {
+                transform: translateY(-px);
+                border-color: var(--cyan);
+            }
+
+            .art {
+                height: 150px;
+                display: grid;
+                place-items: center;
+                font-size: 65px;
+                background: radial-gradient(circle, #00f5ff22, #111321 70%);
+                color: var(--cyan);
+            }
+
+            .card:nth-child(2) .art {
+                color: var(--pink);
+            }
+
+            .card:nth-child(3) .art {
+                color: #ffe66d;
+            }
+
+            .card:nth-child(4) .art {
+                color: var(--purple);
+            }
+
+            .info {
+                padding: 17px;
+            }
+
+            .info h3 {
+                margin: 0 0 7px;
+            }
+
+            .info p {
+                font-size: 12px;
+                margin: 0;
+            }
+
+            .note {
+                text-align: center;
+                font-size: 11px;
+                margin-top: 35px;
+            }
+
+            @media(max-width:850px) {
+                .grid {
+                    grid-template-columns: repeat(2, minmax(0, 1fr));
+                }
+            }
+
+            @media(max-width:500px) {
+                header {
+                    flex-wrap: wrap;
+                    padding: 18px;
+                }
+
+                nav {
+                    order: 3;
+                    width: 100%;
+                    justify-content: space-between;
+                    gap: 8px;
+                }
+
+                main {
+                    padding: 22px 16px;
+                }
+
+                .hero {
+                    padding: 35px 22px;
+                }
+
+                .art {
+                    height: 120px;
+                }
+            }
+        </style>
+    </head>
+
+    <body>
+        <header>
+            <a class="logo" href="index.html">NEON<span>LUCK</span></a>
+            
+            <nav>
+                <a href="index.html">Home</a>
+                <a href="explore.html">Explore Games</a>
+            </nav>
+
+            <div class="balance">◉ <span id="balance">10,000</span> NC</div>
+        </header>
+
+        <main>
+            <div class="hero">
+                <div class="tag">WELCOME TO THE ARCADE</div>
+
+                <h1>ENTER THE <br><span>NEON ZONE.</span></h1>
+            
+                <p>Four games. One currency. Let the games begin.</p>
+            
+                <a class="btn" href="explore.html">EXPLORE GAMES ↗</a>
+            </div>
+
+            <section>
+                <div class="heading">
+                    <h2>Featured Games</h2>
+                    <a href="explore.html">View all ↗</a>
+                </div>
+
+                <div class="grid">
+                    <a class="card" href="coinflip.html">
+                        <div class="art">◉</div>
+                        <div class="info">
+                            <h3>Coin Flip</h3>
+                            <p>Choose your bet and call the side.</p>
+                        </div>
+                    </a>
+
+                    <a class="card" href="roulette.html">
+                        <div class="art">✺</div>
+                        <div class="info">
+                            <h3>Roulette</h3>
+                            <p>Predict red, black, or green.</p>
+                        </div>
+                    </a>
+
+                    <a class="card" href="wheel.hmtl">
+                        <div class="art">✳</div>
+                        <div class="info">
+                            <h3>Prize Wheel</h3>
+                            <p>Spin for a random reward.</p>
+                        </div>
+                    </a>
+
+                    <a class="card" href="mysterybox.html">
+                        <div class="art">▣</div>
+                        <div class="info">
+                            <h3>Mystery Box</h3>
+                            <p>Try your luck at the jackpot.</p>
+                        </div>
+                    </a>
+                </div>
+            </section>
+
+            <p class="note">NEON LUCK · Free-play arcade · Fictional coins only · No real-money betting</p>
+        </main>
+
+        <script>
+            const KEY = "neonLuckBalance";
+
+            if (localStorage.getItem(KEY) === null) localStorage.setItem(KEY, "10000");
+
+            const el = document.getElementById("balance");
+
+            function updateBalance() {
+                el.textContent = Number(localStorage.getItem(KEY) || 0).toLocaleString();
+            }
+
+            updateBalance();
+            window.addEventListener("storage", updateBalance)
+        </script>
+    </body>
+</html>

@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>NEON LUCK | Coin Flip</title>
+
+    <style>
+        :root {
+            --bg: #080910;
+            --panel: #121421;
+            --cyan: #00f5ff;
+            --muted: #999db5
+        }
+
+        * {
+            box-sizing: border-box
+        }
+
+        body {
+            margin: 0;
+            background: var(--bg);
+            color: #f5f5ff;
+            font: 14px Arial, sans-serif;
+            text-align: center
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none
+        }
+
+        header {
+            padding: 20px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 1px solid #252638
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: 900;
+            letter-spacing: 2px
+        }
+
+        .logo span, h1 span {
+            color: var(--cyan)
+        }
+
+        nav {
+            display: flex;
+            gap: 16px
+        }
+
+        .balance {
+            color: var(--cyan);
+            padding: 12px;
+            border: 1px solid #00f5ff44;
+            border-radius: 8px;
+            font-weight: bold
+        }
+
+        main {
+            max-width: 760px;
+            margin: auto;
+            padding: 30px 18px
+        }
+
+        .back {
+            display: block;
+            text-align: left;
+            color: var(--muted)
+        }
+
+        h1 {
+            font-size: clamp(32px, 6vw, 48px)
+        }
+
+        p {
+            color: var(--muted);
+            line-height: 1.8
+        }
+
+        .panel {
+            background: radial-gradient(circle at 50% 20%, #ff3cac22, transparent 50%), var(--panel);
+            padding: 28px;
+            border: 1px solid #292b40;
+            border-radius: 18px
+        }
+
+        .coin-area {
+            height: 220px;
+            display: grid;
+            place-items: center;
+            perspective: 1000px
+        }
+
+        .coin {
+            position: relative;
+            width: 150px;
+            height: 150px;
+            transform-style: preserve-3d
+        }
+
+        .face {
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+            border: 5px solid #d5b45b;
+            background: radial-gradient(circle at 35% 25%, #fff1a8, #e4b63d 65%, #8c6518);
+            color: #171321;
+            box-shadow: 0 0 30px #ffcf5c30, inset 0 0 0 5px #9c7625
+        }
+
+        .face strong {
+            font-size: 18px;
+            letter-spacing: 1px
+        }
+
+        .face span {
+            font-size: 42px
+        }
+
+        .face.tails {
+            transform: rotateY(180deg);
+            background: radial-gradient(circle at 35% 25%, #d9d0ff, #9171ff 65%, #4930a0);
+            border-color: #b8a5ff;
+            color: #fff;
+            box-shadow: 0 0 30px #8b5cf640, inset 0 0 0 5px #573db1
+        }
+
+        .coin.show-heads {
+            transform: rotateY(0deg)
+        }
+
+        .coin.show-tails {
+            transform: rotateY(180deg)
+        }
+
+        .coin.flipping {
+            animation: flip 1.3s cubic-bezier(.15, .75, .25, 1)
+        }
+
+        @keyframes flip {
+            0% {
+                transform: rotateY(0deg)
+            }
+
+            100% {
+                transform: rotateY(1800deg)
+            }
+        }
+
+        .choices {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 18px 0
+        }
+
+        button {
+            padding: 12px 18px;
+            border-radius: 8px;
+            border: 1px solid #383a4d;
+            background: #171a29;
+            color: white;
+            cursor: pointer;
+            font-weight: bold
+        }
+
+        button.selected {
+            outline: 2px solid var(--cyan)
+        }
+
+        button:disabled {
+            opacity: .5;
+            cursor: not-allowed
+        }
+
+        input {
+            display: block;
+            width: 100%;
+            max-width: 280px;
+            margin: 12px auto;
+            padding: 13px;
+            background: #080910;
+            color: white;
+            border: 1px solid #34364a;
+            border-radius: 8px;
+            font-size: 15px
+        }
+
+        .play {
+            background: var(--cyan);
+            color: #080910;
+            border: 0;
+            min-width: 190px
+        }
+
+        #result {
+            min-height: 50px;
+            color: var(--cyan);
+            font-weight: bold;
+            line-height: 1.7;
+            margin: 15px
+        }
+
+        #history {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 15px
+        }
+
+        .history-item {
+            padding: 9px 12px;
+            border: 1px solid #34364a;
+            border-radius: 8px;
+            background: #080910;
+            font-size: 12px
+        }
+
+        .history-item.heads {
+            color: #ffd86b
+        }
+
+        .history-item.tails {
+            color: #b8a5ff
+        }
+
+        @media(max-width:520px) {
+            header {
+                flex-wrap: wrap
+            }
+
+            nav {
+                order: 3;
+                width: 100%;
+                justify-content: center
+            }
+
+            .panel {
+                padding: 20px 12px
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <a class="logo" href="index.html">NEON<span>LUCK</span></a>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="explore.html">Games</a>
+        </nav>
+        <div class="balance">◉ <span id="balance">10,000</span> NC</div>
+    </header>
+
+    <main>
+        <a class="back" href="explore.html">← All Games</a>
+        <p>GAME 01 / THE CLASSIC</p>
+        <h1>COIN <span>FLIP.</span></h1>
+        <p>Pick a side, place your bet, and test your luck. Correct guesses pay 2×.</p>
+
+        <div class="panel">
+            <div class="coin-area">
+                <div class="coin show-heads" id="coin">
+                    <div class="face heads">
+                        <span>☀</span>
+                        <strong>HEADS</strong>
+                    </div>
+                    <div class="face tails">
+                        <span>★</span>
+                        <strong>TAILS</strong>
+                    </div>
+                </div>
+            </div>
+
+            <p>CHOOSE YOUR SIDE</p>
+            <div class="choices">
+                <button class="selected" data-guess="Heads">☀ HEADS</button>
+                <button data-guess="Tails">★ TAILS</button>
+            </div>
+
+            <label for="bet">BET AMOUNT (NC)</label>
+            <input id="bet" type="number" min="1" step="1" value="100">
+
+            <button class="play" id="flip">FLIP COIN ↗</button>
+
+            <div id="result" aria-live="polite">READY TO FLIP?</div>
+
+            <p>Correct guess: 2× total payout, including your bet. Wrong guess: bet lost.</p>
+
+            <p>RECENT FLIPS</p>
+            <div id="history">
+                <span style="color:var(--muted)">Your results will appear here.</span>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const KEY = "neonLuckBalance";
+        if (localStorage.getItem(KEY) === null) {
+            localStorage.setItem(KEY, "10000");
+        }
+
+        const $ = id => document.getElementById(id);
+
+        let choice = "Heads";
+        let busy = false;
+        let history = [];
+
+        function bal() {
+            const value = Number(localStorage.getItem(KEY));
+            return Number.isFinite(value) && value >= 0 ? value : 0;
+        }
+
+        function show() {
+            $("balance").textContent = bal().toLocaleString();
+        }
+
+        function add(n) {
+            localStorage.setItem(KEY, String(bal() + n));
+            show();
+        }
+
+        show();
+        window.addEventListener("storage", show);
+
+        document.querySelectorAll("[data-guess]").forEach(button => {
+            button.onclick = () => {
+                if (busy) return;
+
+                choice = button.dataset.guess;
+
+                document.querySelectorAll("[data-guess]").forEach(item => {
+                    item.classList.toggle("selected", item === button);
+                });
+            };
+        });
+
+        function addHistory(side, won, bet) {
+            history.unshift({ side, won, bet });
+            history = history.slice(0, 6);
+
+            $("history").replaceChildren();
+
+            history.forEach(item => {
+                const element = document.createElement("span");
+                element.className = "history-item " + item.side.toLowerCase();
+                element.textContent =
+                    `${item.side.toUpperCase()} · ${item.won ? "WIN" : "LOSS"} · ${item.won ? "+" : "-"}${item.bet.toLocaleString()} NC`;
+                $("history").appendChild(element);
+            });
+        }
+
+        $("flip").onclick = () => {
+            if (busy) return;
+
+            const bet = Number($("bet").value);
+
+            if (!Number.isSafeInteger(bet) || bet < 1) {
+                $("result").textContent = "Enter a whole-number bet of at least 1 NC.";
+                return;
+            }
+
+            if (bet > bal()) {
+                $("result").textContent = "Not enough NC for that bet.";
+                return;
+            }
+
+            const startingBalance = bal();
+
+            const result = Math.random() < 0.5 ? "Heads" : "Tails";
+            const won = choice === result;
+            const payout = won ? bet * 2 : 0;
+
+            if (!Number.isSafeInteger(payout) ||
+                !Number.isSafeInteger(startingBalance - bet + payout)) {
+                $("result").textContent = "Bet too large. Try a smaller amount.";
+                return;
+            }
+
+            busy = true;
+            $("flip").disabled = true;
+            $("bet").disabled = true;
+
+            document.querySelectorAll("[data-guess]").forEach(button => {
+                button.disabled = true;
+            });
+
+            add(-bet + payout);
+
+            const coin = $("coin");
+
+            coin.classList.remove("flipping", "show-heads", "show-tails");
+
+            void coin.offsetWidth;
+
+            coin.classList.add("flipping");
+            $("result").textContent = "FLIPPING...";
+
+            setTimeout(() => {
+                coin.classList.remove("flipping", "show-heads", "show-tails");
+
+                coin.classList.add(result === "Heads" ? "show-heads" : "show-tails");
+
+                if (won) {
+                    $("result").textContent =
+                        `${result.toUpperCase()} — YOU WON ${payout.toLocaleString()} NC!`;
+                } else {
+                    $("result").textContent =
+                        `${result.toUpperCase()} — BET LOST. YOU CHOSE ${choice.toUpperCase()}.`;
+                }
+
+                addHistory(result, won, bet);
+
+                busy = false;
+                $("flip").disabled = false;
+                $("bet").disabled = false;
+
+                document.querySelectorAll("[data-guess]").forEach(button => {
+                    button.disabled = false;
+                });
+
+                $("flip").textContent = "FLIP AGAIN ↗";
+            }, 1350);
+        };
+    </script>
+</body>
+</html>

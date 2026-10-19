@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>NEON LUCK | Roulette</title>
+
+    <style>
+        :root {
+            --bg: #080910;
+            --panel: #121421;
+            --cyan: #00f5ff;
+            --muted: #999db5;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background: var(--bg);
+            color: #f5f5ff;
+            font: 14px Arial, sans-serif;
+            text-align: center;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header {
+            padding: 20px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 1px solid #252638;
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: 900;
+            letter-spacing: 2px;
+        }
+
+        .logo span, h1 span {
+            color: var(--cyan);
+        }
+
+        nav {
+            display: flex;
+            gap: 16px;
+        }
+
+        .balance {
+            color: var(--cyan);
+            padding: 12px;
+            border: 1px solid #00f5ff44;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+
+        main {
+            max-width: 760px;
+            margin: auto;
+            padding: 30px 18px;
+        }
+
+        .back {
+            display: block;
+            text-align: left;
+            color: var(--muted);
+        }
+
+        h1 {
+            font-size: clamp(32px, 6vw, 48px);
+        }
+
+        p {
+            color: var(--muted);
+            line-height: 1.8;
+        }
+
+        .panel {
+            background: radial-gradient(circle at 50% 20%, #ff3cac22, transparent 50%, var(--panel));
+            padding: 28px;
+            border: 1px solid #292b40;
+            border-radius: 18px;
+        }
+
+        .wheel {
+            width: 190px;
+            height: 190px;
+            border-radius: 50%;
+            margin: 15px auto 25px;
+            border: 7px solid #d5b45b;
+            background: conic-gradient(#e63858 0deg 90deg, #171a29 90deg 180deg, #e63858 180deg 270deg, #171a29 270deg);
+            display: grid;
+            place-items: center;
+            box-shadow: 0 0 30px #ff3cac22;
+            transition: transform 1.3s cubic-bezier(.15, .75, .25, 1);
+        }
+
+        .wheel span {
+            display: grid;
+            place-items: center;
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: #080910;
+            border: 2px solid #d5b45b;
+            font-size: 22px;
+        }
+
+        .choices {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 18px 0;
+        }
+
+        button {
+            padding: 12px 18px;
+            border-radius: 8px;
+            border: 1px solid #383a4d;
+            background: #171a29;
+            color: white;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        button.selected {
+            outline: 2px solid var(--cyan);
+        }
+
+        button:disabled {
+            opacity: .5;
+            cursor: not-allowed;
+        }
+
+        .red {
+            color: #ff5a70;
+        }
+
+        .black {
+            color: #ddd;
+        }
+
+        .green {
+            color: #64ffb4;
+        }
+
+        input {
+            display: block;
+            width: 100%;
+            max-width: 280px;
+            margin: 12px auto;
+            padding: 13px;
+            background: #080910;
+            color: white;
+            border: 1px solid #34364a;
+            border-radius: 8px;
+            font-size: 15px;
+        }
+
+        .play {
+            background: var(--cyan);
+            color: #080910;
+            border: 0;
+            min-width: 190px;
+        }
+
+        #result {
+            min-height: 50px;
+            color: var(--cyan);
+            font-weight: bold;
+            line-height: 1.7;
+            margin: 15px;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <a class="logo" href="index.html">NEON<span>LUCK</span></a>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="explore.html">Games</a>
+        </nav>
+        <div class="balance">◉ <span id="balance">10,000</span> NC</div>
+    </header>
+
+    <main>
+        <a class="back" href="explore.html">← All Games</a>
+        <p>GAME 02 / COLOUR CHALLENGE</p>
+        <h1>NEON <span>ROULETTE.</span></h1>
+        <p>Choose a colour and set your bet. Green has a rare 14× total payout.</p>
+
+        <div class="panel">
+            <div class="wheel" id="wheel">
+                <span id="number">?</span>
+            </div>
+
+            <p>CHOOSE A COLOUR</p>
+
+            <div class="choices">
+                <button class="red selected" data-colour="red">RED · 2x</button>
+                <button class="black" data-colour="black">BLACK · 2x</button>
+                <button class="green" data-colour="green">GREEN · 14x</button>
+            </div>
+
+            <label for="bet">BET AMOUNT (NC)</label>
+            <input id="bet" type="number" min="1" step="1" value="100">
+
+            <button class="play" id="spin">SPIN WHEEL ↗</button>
+            <div id="result">READY TO SPIN??</div>
+
+            <p>Multipliers include the original bet. A wrong guess loses it all.</p>
+        </div>
+    </main>
+
+    <script>
+        const KEY = "neonLuckBalance";
+        if (localStorage.getItem(KEY) === null) localStorage.setItem(KEY, "10000");
+
+        const $ = id => document.getElementById(id);
+        let choice = "red", busy = false, rotation = 0;
+
+        const reds = new Set([1, 3, 5, 7, 9, 12, 14, 16, 18, 19, 21, 23, 25, 27, 30, 32, 34, 36]);
+
+        function bal() {
+            return Number(localStorage.getItem(KEY) || 0)
+        }
+
+        function show() {
+            $("balance").textContent = bal().toLocaleString();
+        }
+
+        function add(n) {
+            localStorage.setItem(KEY, String(bal() + n));
+            show();
+        }
+
+        show();
+        window.addEventListener("storage", show);
+
+        document.querySelectorAll("[data-colour]").forEach(b => b.onclick = () => {
+            if (busy) return;
+            choice = b.dataset.colour;
+            document.querySelectorAll("[data-colour]").forEach(x => x.classList.toggle("selected", x === b));
+        });
+
+        $("spin").onclick = () => {
+            if (busy) return;
+
+            const bet = Number($("bet").value);
+
+            if (!Number.isSafeInteger(bet) || bet < 1) {
+                $("result").textContent = "Enter a whole number bet of atleast 1 NC.";
+                return;
+            }
+
+            if (!Number.isSafeInteger(bet) || bet < 1) {
+                $("result").textContent = "Not enough NC for that bet.";
+                return;
+            }
+
+            add(-bet);
+            busy = true;
+            $("spin").disabled = true;
+            $("bet").disabled = true;
+            $("result").textContent = "SPINNING...";
+
+            const n = Math.floor(Math.random() * 37), colour = n === 0 ? "green" : reds.has(n) ? "red" : "black";
+
+            rotation += 1440 + Math.random() * 720;
+            $("wheel").style.transform = `rotate(${rotation}deg)`;
+
+            setTimeout(() => {
+                $("number").textContent = n;
+                $("number").style.color = colour === "red" ? "#ff5a70" : colour === "green" ? "#64ffb4" : "#fff";
+                
+                const win = choice === colour, payout = win ? bet * (colour === "green" ? 14 : 2) : 0;
+
+                if (payout) add(payout);
+
+                $("result").textContent = `${n} · ${colour.toUpperCase()} — ${win ? "YOU RECEIVED" + payout.toLocaleString() + " NC!" : "BET LOST"}`;
+
+                busy = false;
+                $("spin").disabled = false;
+                $("bet").disabled = false;
+                $("spin").textContent = "SPIN AGAIN ↗";
+            }, 1400);
+        };
+    </script>
+</body>
+</html>
